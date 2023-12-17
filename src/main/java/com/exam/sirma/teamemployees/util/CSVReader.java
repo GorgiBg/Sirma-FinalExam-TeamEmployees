@@ -36,12 +36,12 @@ public class CSVReader {
                         System.out.println(e.getMessage());
                     }
                 } else {
-                    // TODO throw Exception if line is invalid
+                    throw new IllegalArgumentException("Invalid data in line: " + line);
                 }
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
         //TODO - (to remove later) print Employees for testing purposes
         System.out.println(employees);
