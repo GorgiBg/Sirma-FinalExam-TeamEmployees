@@ -17,7 +17,7 @@ public class DataInitialization {
     public DataInitialization(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
-
+    //init the data from CSV to DB
     @Bean
     public CommandLineRunner initData() {
         return args -> {
