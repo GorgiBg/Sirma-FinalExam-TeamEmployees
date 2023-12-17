@@ -1,8 +1,17 @@
-package com.exam.sirma.teamemployees.entities;
+package com.exam.sirma.teamemployees.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.time.LocalDate;
 
+
+@Entity
+@Table
 public class Employee {
+
+    @Id
     private Long empId;
     private int projectId;
     private LocalDate dateFrom;

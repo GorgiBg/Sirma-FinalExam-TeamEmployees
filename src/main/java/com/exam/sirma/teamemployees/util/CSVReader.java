@@ -1,6 +1,6 @@
-package com.exam.sirma.teamemployees.utils;
+package com.exam.sirma.teamemployees.util;
 
-import com.exam.sirma.teamemployees.entities.Employee;
+import com.exam.sirma.teamemployees.entity.Employee;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
