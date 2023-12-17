@@ -11,10 +11,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 public class CSVReader {
 
@@ -40,27 +37,16 @@ public class CSVReader {
                             .findFirst();
 
                         // Create or get the existing Employee
-                        Employee employee = existingEmployee.orElseGet(() -> {
-                            Employee newEmployee = new Employee();
-                            newEmployee.setEmpId(empId);
-                            newEmployee.setProjectParticipation(new ArrayList<>());
-                            employees.add(newEmployee);
-                            return newEmployee;
-                        });
+                        Employee employee = getEmployee(existingEmployee, empId, employees);
 
                         // Create ProjectParticipation object to store the data of Employee involvement in project with number(projectNumber)
-                        ProjectParticipation participation = new ProjectParticipation();
-                        participation.setProjectNumber(projectNumber);
-                        participation.setDateFrom(dateFrom);
-                        participation.setDateTo(dateTo);
-
+                        ProjectParticipation participation = createProjectParticipation(projectNumber, dateFrom,
+                            dateTo, employee);
+                        employeeService.saveEmployee(employee);
                         participationService.saveProjectParticipation(participation);
                         // Set the relationship between Employee and Participation
-                        participation.setEmployee(employee);
-                        employee.getProjectParticipation().add(participation);
 
-                        employeeService.saveEmployee(employee);
-                        employeeService.saveProjectParticipation(participation);
+                        employee.getProjectParticipation().put(projectNumber, participation);
                     } catch (NumberFormatException | DateTimeParseException e) {
                         System.out.println("Error parsing data: " + e.getMessage());
                     }
@@ -78,6 +64,25 @@ public class CSVReader {
         return employees;
     }
 
+    private static ProjectParticipation createProjectParticipation(int projectNumber, LocalDate dateFrom, LocalDate dateTo, Employee employee) {
+        ProjectParticipation participation = new ProjectParticipation();
+        participation.setProjectNumber(projectNumber);
+        participation.setDateFrom(dateFrom);
+        participation.setDateTo(dateTo);
+        participation.setEmployee(employee);
+        return participation;
+    }
+
+    private static Employee getEmployee(Optional<Employee> existingEmployee, Long empId, List<Employee> employees) {
+        Employee employee = existingEmployee.orElseGet(() -> {
+            Employee newEmployee = new Employee();
+            newEmployee.setEmpId(empId);
+            newEmployee.setProjectParticipation(new HashMap<>());
+            employees.add(newEmployee);
+            return newEmployee;
+        });
+        return employee;
+    }
 
 
     private static LocalDate parseDate(String dateString) {

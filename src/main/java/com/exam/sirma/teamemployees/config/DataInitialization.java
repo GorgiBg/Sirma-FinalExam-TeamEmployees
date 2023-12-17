@@ -26,7 +26,8 @@ public class DataInitialization {
     @Bean
     public CommandLineRunner initData() {
         return args -> {
-            CSVReader.read("src/main/resources/datafile.csv", employeeService, participationService);
+            List<Employee> read = CSVReader.read("src/main/resources/datafile.csv", employeeService, participationService);
+            System.out.println();
         };
     }
 }

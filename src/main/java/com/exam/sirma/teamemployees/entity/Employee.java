@@ -2,8 +2,8 @@ package com.exam.sirma.teamemployees.entity;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table
@@ -12,16 +12,17 @@ public class Employee {
     @Id
     private Long empId;
 
-    @OneToMany
-    private List<ProjectParticipation> projectParticipation;
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @MapKey(name = "projectNumber")
+    private Map<Integer, ProjectParticipation> projectParticipation;
 
-    public Employee(Long empId, List<ProjectParticipation> projectParticipation) {
+    public Employee(Long empId, Map<Integer, ProjectParticipation> projectParticipation) {
         this.empId = empId;
         this.projectParticipation = projectParticipation;
     }
 
     public Employee() {
-        this.projectParticipation = new ArrayList<>();
+        this.projectParticipation = new HashMap<>();
     }
 
     public Long getEmpId() {
@@ -32,11 +33,11 @@ public class Employee {
         this.empId = empId;
     }
 
-    public List<ProjectParticipation> getProjectParticipation() {
+    public Map<Integer, ProjectParticipation> getProjectParticipation() {
         return projectParticipation;
     }
 
-    public void setProjectParticipation(List<ProjectParticipation> projectParticipation) {
+    public void setProjectParticipation(Map<Integer, ProjectParticipation> projectParticipation) {
         this.projectParticipation = projectParticipation;
     }
 
