@@ -1,6 +1,9 @@
 package com.exam.sirma.teamemployees.util;
 
 import com.exam.sirma.teamemployees.entity.Employee;
+import com.exam.sirma.teamemployees.entity.ProjectParticipation;
+import com.exam.sirma.teamemployees.service.EmployeeService;
+import com.exam.sirma.teamemployees.service.ProjectParticipationService;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -11,10 +14,11 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 public class CSVReader {
 
-    public static List<Employee> read(String filepath) {
+    public static List<Employee> read(String filepath, EmployeeService employeeService, ProjectParticipationService participationService) {
         List<Employee> employees = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
@@ -26,27 +30,55 @@ public class CSVReader {
                 if (values.length == 4) {
                     try {
                         Long empId = Long.parseLong(values[0].trim());
-                        int projectId = Integer.parseInt(values[1].trim());
+                        int projectNumber = Integer.parseInt(values[1].trim());
                         LocalDate dateFrom = parseDate(values[2].trim());
                         LocalDate dateTo = parseDate(values[3].trim());
 
-                        // Create and add Employee object
-                        employees.add(new Employee(empId, projectId, dateFrom, dateTo));
+                        // Check if an Employee with the same ID already exists
+                        Optional<Employee> existingEmployee = employees.stream()
+                            .filter(e -> e.getEmpId().equals(empId))
+                            .findFirst();
+
+                        // Create or get the existing Employee
+                        Employee employee = existingEmployee.orElseGet(() -> {
+                            Employee newEmployee = new Employee();
+                            newEmployee.setEmpId(empId);
+                            newEmployee.setProjectParticipation(new ArrayList<>());
+                            employees.add(newEmployee);
+                            return newEmployee;
+                        });
+
+                        // Create ProjectParticipation object to store the data of Employee involvement in project with number(projectNumber)
+                        ProjectParticipation participation = new ProjectParticipation();
+                        participation.setProjectNumber(projectNumber);
+                        participation.setDateFrom(dateFrom);
+                        participation.setDateTo(dateTo);
+
+                        participationService.saveProjectParticipation(participation);
+                        // Set the relationship between Employee and Participation
+                        participation.setEmployee(employee);
+                        employee.getProjectParticipation().add(participation);
+
+                        employeeService.saveEmployee(employee);
+                        employeeService.saveProjectParticipation(participation);
                     } catch (NumberFormatException | DateTimeParseException e) {
-                        System.out.println(e.getMessage());
+                        System.out.println("Error parsing data: " + e.getMessage());
                     }
                 } else {
-                    throw new IllegalArgumentException("Invalid data in line: " + line);
+                    System.out.println("Invalid data in line: " + line);
                 }
             }
 
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error reading file: " + e.getMessage());
         }
-        //TODO - (to remove later) print Employees for testing purposes
+
+        // TODO - (to remove later) print Employees for testing purposes
         System.out.println(employees);
         return employees;
     }
+
+
 
     private static LocalDate parseDate(String dateString) {
         // if we don`t have dateTo we add LocalDate.now()

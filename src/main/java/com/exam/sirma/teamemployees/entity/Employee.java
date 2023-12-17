@@ -1,11 +1,9 @@
 package com.exam.sirma.teamemployees.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
-import java.time.LocalDate;
-
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -13,18 +11,17 @@ public class Employee {
 
     @Id
     private Long empId;
-    private int projectId;
-    private LocalDate dateFrom;
-    private LocalDate dateTo;
 
-    public Employee(Long empId, int projectId, LocalDate dateFrom, LocalDate dateTo) {
+    @OneToMany
+    private List<ProjectParticipation> projectParticipation;
+
+    public Employee(Long empId, List<ProjectParticipation> projectParticipation) {
         this.empId = empId;
-        this.projectId = projectId;
-        this.dateFrom = dateFrom;
-        this.dateTo = dateTo;
+        this.projectParticipation = projectParticipation;
     }
 
     public Employee() {
+        this.projectParticipation = new ArrayList<>();
     }
 
     public Long getEmpId() {
@@ -35,37 +32,19 @@ public class Employee {
         this.empId = empId;
     }
 
-    public int getProjectId() {
-        return projectId;
+    public List<ProjectParticipation> getProjectParticipation() {
+        return projectParticipation;
     }
 
-    public void setProjectId(int projectId) {
-        this.projectId = projectId;
-    }
-
-    public LocalDate getDateFrom() {
-        return dateFrom;
-    }
-
-    public void setDateFrom(LocalDate dateFrom) {
-        this.dateFrom = dateFrom;
-    }
-
-    public LocalDate getDateTo() {
-        return dateTo;
-    }
-
-    public void setDateTo(LocalDate dateTo) {
-        this.dateTo = dateTo;
+    public void setProjectParticipation(List<ProjectParticipation> projectParticipation) {
+        this.projectParticipation = projectParticipation;
     }
 
     @Override
     public String toString() {
         return "Employee{" +
             "empId=" + empId +
-            ", projectId=" + projectId +
-            ", dateFrom=" + dateFrom +
-            ", dateTo=" + dateTo +
+            ", projectParticipation=" + projectParticipation +
             '}';
     }
 }
