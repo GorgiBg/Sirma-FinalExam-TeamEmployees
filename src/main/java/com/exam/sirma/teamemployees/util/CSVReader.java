@@ -41,7 +41,7 @@ public class CSVReader {
             }
 
         } catch (IOException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
         //TODO - (to remove later) print Employees for testing purposes
         System.out.println(employees);
