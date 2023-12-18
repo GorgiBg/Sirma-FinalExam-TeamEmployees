@@ -45,14 +45,12 @@ public class CSVReader {
                         ProjectParticipation participation = getOrCreateProjectParticipation(employee, projectNumber);
 
                         // Add a new DateRange to the list
-                        participation.getDateRangesOnProject().add(new DateRange(dateFrom, dateTo));
+                        DateRange dateRange = new DateRange(dateFrom, dateTo);
+                        participation.getDateRangesOnProject().add(dateRange);
 
-                        // Add new Participation
-                        employee.getProjectParticipation().put(projectNumber, participation);
-
-                        // Save the Employee and ProjectParticipation
-                        employeeService.saveEmployee(employee);
+                        // Save the DateRange, ProjectParticipation, and Employee
                         participationService.saveProjectParticipation(participation);
+                        employeeService.saveEmployee(employee);
 
                     } catch (NumberFormatException | DateTimeParseException e) {
                         System.out.println("Error parsing data: " + e.getMessage());
@@ -72,7 +70,11 @@ public class CSVReader {
     }
 
     private static ProjectParticipation getOrCreateProjectParticipation(Employee employee, int projectNumber) {
-        return employee.getProjectParticipation().computeIfAbsent(projectNumber, k -> new ProjectParticipation());
+        return employee.getProjectParticipation().computeIfAbsent(projectNumber, k -> {
+            ProjectParticipation newParticipation = new ProjectParticipation();
+            newParticipation.setProjectNumber(projectNumber);
+            return newParticipation;
+        });
     }
 
     private static Employee getEmployee(Optional<Employee> existingEmployee, Long empId, List<Employee> employees) {
@@ -116,8 +118,7 @@ public class CSVReader {
             }
         }
 
-        // If none of the formats match, return LocalDate.now() or throw an exception
-        return LocalDate.now();
+        throw new DateTimeParseException("Unable to parse date: " + dateString, dateString, 0);
     }
 }
 

@@ -1,6 +1,7 @@
 package com.exam.sirma.teamemployees.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,16 +13,14 @@ public class Employee {
     @Id
     private Long empId;
 
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Map<Integer, ProjectParticipation> projectParticipation;
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private Map<Integer, ProjectParticipation> projectParticipation = new HashMap<>();
 
-    public Employee(Long empId, Map<Integer, ProjectParticipation> projectParticipation) {
+    public Employee(Long empId) {
         this.empId = empId;
-        this.projectParticipation = projectParticipation;
     }
 
     public Employee() {
-        this.projectParticipation = new HashMap<>();
     }
 
     public Long getEmpId() {
@@ -44,7 +43,6 @@ public class Employee {
     public String toString() {
         return "Employee{" +
             "empId=" + empId +
-            ", projectParticipation=" + projectParticipation +
             '}';
     }
 }
