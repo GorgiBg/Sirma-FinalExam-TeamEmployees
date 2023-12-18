@@ -1,5 +1,6 @@
 package com.exam.sirma.teamemployees.util;
 
+import com.exam.sirma.teamemployees.entity.DateRange;
 import com.exam.sirma.teamemployees.entity.Employee;
 import com.exam.sirma.teamemployees.entity.ProjectParticipation;
 import com.exam.sirma.teamemployees.service.EmployeeService;
@@ -15,7 +16,8 @@ import java.util.*;
 
 public class CSVReader {
 
-    public static List<Employee> read(String filepath, EmployeeService employeeService, ProjectParticipationService participationService) {
+    public static List<Employee> read(String filepath, EmployeeService employeeService,
+                                      ProjectParticipationService participationService) {
         List<Employee> employees = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
@@ -39,14 +41,19 @@ public class CSVReader {
                         // Create or get the existing Employee
                         Employee employee = getEmployee(existingEmployee, empId, employees);
 
-                        // Create ProjectParticipation object to store the data of Employee involvement in project with number(projectNumber)
-                        ProjectParticipation participation = createProjectParticipation(projectNumber, dateFrom,
-                            dateTo, employee);
+                        // Create or get the existing ProjectParticipation for the same project number
+                        ProjectParticipation participation = getOrCreateProjectParticipation(employee, projectNumber);
+
+                        // Add a new DateRange to the list
+                        participation.getDateRangesOnProject().add(new DateRange(dateFrom, dateTo));
+
+                        // Add new Participation
+                        employee.getProjectParticipation().put(projectNumber, participation);
+
+                        // Save the Employee and ProjectParticipation
                         employeeService.saveEmployee(employee);
                         participationService.saveProjectParticipation(participation);
-                        // Set the relationship between Employee and Participation
 
-                        employee.getProjectParticipation().put(projectNumber, participation);
                     } catch (NumberFormatException | DateTimeParseException e) {
                         System.out.println("Error parsing data: " + e.getMessage());
                     }
@@ -64,26 +71,19 @@ public class CSVReader {
         return employees;
     }
 
-    private static ProjectParticipation createProjectParticipation(int projectNumber, LocalDate dateFrom, LocalDate dateTo, Employee employee) {
-        ProjectParticipation participation = new ProjectParticipation();
-        participation.setProjectNumber(projectNumber);
-        participation.setDateFrom(dateFrom);
-        participation.setDateTo(dateTo);
-        participation.setEmployee(employee);
-        return participation;
+    private static ProjectParticipation getOrCreateProjectParticipation(Employee employee, int projectNumber) {
+        return employee.getProjectParticipation().computeIfAbsent(projectNumber, k -> new ProjectParticipation());
     }
 
     private static Employee getEmployee(Optional<Employee> existingEmployee, Long empId, List<Employee> employees) {
-        Employee employee = existingEmployee.orElseGet(() -> {
+        return existingEmployee.orElseGet(() -> {
             Employee newEmployee = new Employee();
             newEmployee.setEmpId(empId);
             newEmployee.setProjectParticipation(new HashMap<>());
             employees.add(newEmployee);
             return newEmployee;
         });
-        return employee;
     }
-
 
     private static LocalDate parseDate(String dateString) {
         // if we don`t have dateTo we add LocalDate.now()

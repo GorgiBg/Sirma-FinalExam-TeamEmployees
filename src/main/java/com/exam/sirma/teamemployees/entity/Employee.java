@@ -12,8 +12,7 @@ public class Employee {
     @Id
     private Long empId;
 
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @MapKey(name = "projectNumber")
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     private Map<Integer, ProjectParticipation> projectParticipation;
 
     public Employee(Long empId, Map<Integer, ProjectParticipation> projectParticipation) {

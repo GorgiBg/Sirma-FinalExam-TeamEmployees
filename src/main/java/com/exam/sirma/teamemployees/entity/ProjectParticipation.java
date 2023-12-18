@@ -1,7 +1,9 @@
 package com.exam.sirma.teamemployees.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -9,30 +11,31 @@ public class ProjectParticipation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private int projectNumber;
-    private LocalDate dateFrom;
-    private LocalDate dateTo;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DateRange> dateRangesOnProject = new ArrayList<>();
 
     @ManyToOne
     private Employee employee;
-
-    public ProjectParticipation(int projectNumber, LocalDate dateFrom, LocalDate dateTo) {
-        this.projectNumber = projectNumber;
-        this.dateFrom = dateFrom;
-        this.dateTo = dateTo;
-    }
 
     public ProjectParticipation() {
 
     }
 
-    public int getId() {
+    public ProjectParticipation(Long id, int projectNumber, Employee employee) {
+        this.id = id;
+        this.projectNumber = projectNumber;
+        this.employee = employee;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -44,20 +47,12 @@ public class ProjectParticipation {
         this.projectNumber = projectNumber;
     }
 
-    public LocalDate getDateFrom() {
-        return dateFrom;
+    public List<DateRange> getDateRangesOnProject() {
+        return dateRangesOnProject;
     }
 
-    public void setDateFrom(LocalDate dateFrom) {
-        this.dateFrom = dateFrom;
-    }
-
-    public LocalDate getDateTo() {
-        return dateTo;
-    }
-
-    public void setDateTo(LocalDate dateTo) {
-        this.dateTo = dateTo;
+    public void setDateRangesOnProject(List<DateRange> dateRangesOnProject) {
+        this.dateRangesOnProject = dateRangesOnProject;
     }
 
     public Employee getEmployee() {
@@ -73,8 +68,7 @@ public class ProjectParticipation {
         return "ProjectParticipation{" +
             "id=" + id +
             ", projectNumber=" + projectNumber +
-            ", dateFrom=" + dateFrom +
-            ", dateTo=" + dateTo +
+            ", dateRangesOnProject=" + dateRangesOnProject +
             '}';
     }
 }
