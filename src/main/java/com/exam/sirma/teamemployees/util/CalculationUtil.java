@@ -43,19 +43,10 @@ public class CalculationUtil {
     }
 
     private static long calculateTotalDuration(Employee employee1, Employee employee2) {
-        long totalDuration = 0;
-
-        for (Map.Entry<Integer, ProjectParticipation> entry : employee1.getProjectParticipation().entrySet()) {
-            int projectNumber = entry.getKey();
-            ProjectParticipation projectParticipation1 = entry.getValue();
-            ProjectParticipation projectParticipation2 = employee2.getProjectParticipation().get(projectNumber);
-
-            if (projectParticipation2 != null) {
-                totalDuration += calculateDuration(projectParticipation1, projectParticipation2);
-            }
-        }
-
-        return totalDuration;
+        return employee1.getProjectParticipation().entrySet().stream()
+            .filter(entry -> employee2.getProjectParticipation().containsKey(entry.getKey()))
+            .mapToLong(entry -> calculateDuration(entry.getValue(), employee2.getProjectParticipation().get(entry.getKey())))
+            .sum();
     }
 
     private static void displayCommonProjects(Employee employee1, Employee employee2) {
