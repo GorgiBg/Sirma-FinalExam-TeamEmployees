@@ -71,7 +71,7 @@ public class CSVReader {
     }
 
     private static ProjectParticipation getOrCreateProjectParticipation(Employee employee, int projectNumber) {
-        return employee.getProjectParticipation().computeIfAbsent(projectNumber, k -> {
+        return employee.getProjectParticipation().computeIfAbsent(projectNumber, e -> {
             ProjectParticipation newParticipation = new ProjectParticipation();
             newParticipation.setProjectNumber(projectNumber);
             return newParticipation;
