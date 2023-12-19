@@ -4,6 +4,7 @@ import com.exam.sirma.teamemployees.entity.Employee;
 import com.exam.sirma.teamemployees.entity.ProjectParticipation;
 import com.exam.sirma.teamemployees.repository.EmployeeRepository;
 import com.exam.sirma.teamemployees.repository.ProjectParticipationRepository;
+import com.exam.sirma.teamemployees.util.StringConstant;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +33,7 @@ public class EmployeeService {
     public Employee getEmployeeById(Long id) {
         try {
             Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("No Employee with ID: " + id + " found!"));
+                .orElseThrow(() -> new NoSuchElementException(String.format(StringConstant.EMPLOYEE_NOT_FOUND, id)));
             return employee;
         } catch (NoSuchElementException e) {
             System.out.println(e.getMessage());

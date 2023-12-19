@@ -5,6 +5,7 @@ import com.exam.sirma.teamemployees.service.EmployeeService;
 import com.exam.sirma.teamemployees.service.ProjectParticipationService;
 import com.exam.sirma.teamemployees.util.CSVReader;
 import com.exam.sirma.teamemployees.util.CalculationUtil;
+import com.exam.sirma.teamemployees.util.StringConstant;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +29,7 @@ public class DataInitialization {
     @Bean
     public CommandLineRunner initData() {
         return args -> {
-            List<Employee> read = CSVReader.read("src/main/resources/datafile.csv", employeeService, participationService);
+            List<Employee> read = CSVReader.read(StringConstant.FILE_PATH, employeeService, participationService);
             CalculationUtil.identifyLongestWorkingPair(read);
             // for testing purposes
             System.out.println();

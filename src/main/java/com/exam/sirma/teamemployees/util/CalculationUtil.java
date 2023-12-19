@@ -10,6 +10,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 
+import static com.exam.sirma.teamemployees.util.StringConstant.*;
+
 @Component
 public class CalculationUtil {
     public static void identifyLongestWorkingPair(List<Employee> employees) {
@@ -32,11 +34,11 @@ public class CalculationUtil {
                 }
             }
         }
-
-        System.out.println("Longest working pair: " + employee1WithLongestDuration.getEmpId() +
-            " and " + employee2WithLongestDuration.getEmpId());
-        System.out.println("Total duration: " + longestDuration + " days");
-
+        if (employee1WithLongestDuration != null & employee2WithLongestDuration != null) {
+            System.out.println(String.format(LONGEST_WORKING_PAIR, employee1WithLongestDuration.getEmpId(),
+                employee2WithLongestDuration.getEmpId()));
+            System.out.println(String.format(TOTAL_DURATION, longestDuration));
+        }
         displayCommonProjects(employee1WithLongestDuration, employee2WithLongestDuration);
     }
 
@@ -57,7 +59,7 @@ public class CalculationUtil {
     }
 
     private static void displayCommonProjects(Employee employee1, Employee employee2) {
-        System.out.println("Common projects:");
+        System.out.println(COMMON_PROJECTS);
 
         for (Map.Entry<Integer, ProjectParticipation> entry : employee1.getProjectParticipation().entrySet()) {
             int projectNumber = entry.getKey();
@@ -66,7 +68,7 @@ public class CalculationUtil {
 
             if (projectParticipation2 != null) {
                 long duration = calculateDuration(projectParticipation1, projectParticipation2);
-                System.out.println("Project " + projectNumber + ": " + duration + " days");
+                System.out.println(String.format(PROJECT_DURATION, projectNumber, duration));
             }
         }
     }
