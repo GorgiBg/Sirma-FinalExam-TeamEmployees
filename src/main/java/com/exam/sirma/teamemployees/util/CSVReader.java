@@ -3,6 +3,7 @@ package com.exam.sirma.teamemployees.util;
 import com.exam.sirma.teamemployees.entity.DateRange;
 import com.exam.sirma.teamemployees.entity.Employee;
 import com.exam.sirma.teamemployees.entity.ProjectParticipation;
+import com.exam.sirma.teamemployees.enumeration.DateString;
 import com.exam.sirma.teamemployees.service.EmployeeService;
 import com.exam.sirma.teamemployees.service.ProjectParticipationService;
 
@@ -30,8 +31,8 @@ public class CSVReader {
                     try {
                         Long empId = Long.parseLong(values[0].trim());
                         int projectNumber = Integer.parseInt(values[1].trim());
-                        LocalDate dateFrom = parseDate(values[2].trim());
-                        LocalDate dateTo = parseDate(values[3].trim());
+                        LocalDate dateFrom = parseDate(values[2].trim(), DateString.DATE_FROM);
+                        LocalDate dateTo = parseDate(values[3].trim(), DateString.DATE_TO);
 
                         // Check if an Employee with the same ID already exists
                         Optional<Employee> existingEmployee = employees.stream()
@@ -87,9 +88,9 @@ public class CSVReader {
         });
     }
 
-    private static LocalDate parseDate(String dateString) {
+    private static LocalDate parseDate(String dateString, DateString dateEnum) {
         // if we don`t have dateTo we add LocalDate.now()
-        if (dateString.equalsIgnoreCase("NULL")) {
+        if (dateString.equalsIgnoreCase("NULL") && dateEnum.equals(DateString.DATE_TO)) {
             return LocalDate.now();
         }
 
