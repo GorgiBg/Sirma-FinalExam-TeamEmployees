@@ -7,6 +7,7 @@ import com.exam.sirma.teamemployees.util.CSVReader;
 import com.exam.sirma.teamemployees.util.CalculationUtil;
 import com.exam.sirma.teamemployees.util.StringConstant;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,11 +54,12 @@ public class EmployeeController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-   @GetMapping("/print-result")
+    @GetMapping( "/print-result")
    public ResponseEntity<String> printResult() {
        List<Employee> allEmployees = employeeService.getAllEmployees();
        String result = CalculationUtil.identifyLongestWorkingPair(allEmployees);
-       System.out.println();
+       // set System.lineSeparator() to <br> so i can get line breaks in html
+       result = result.replace(System.lineSeparator(), "<br>");
        return ResponseEntity.ok(result);
    }
 }
