@@ -15,13 +15,17 @@ public class DateRange {
     private LocalDate endDate;
 
 
-    public DateRange(LocalDate startDate, LocalDate endDate) {
+
+    @ManyToOne
+    ProjectParticipation participation;
+
+    public DateRange(LocalDate startDate, LocalDate endDate, ProjectParticipation participation) {
         this.startDate = startDate;
         this.endDate = endDate;
+        this.participation = participation;
     }
 
     public DateRange() {
-
     }
 
     public LocalDate getStartDate() {

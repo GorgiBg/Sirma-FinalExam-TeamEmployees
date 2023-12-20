@@ -15,7 +15,7 @@ public class ProjectParticipation {
 
     private int projectNumber;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "participation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<DateRange> dateRangesOnProject = new ArrayList<>();
 
     @ManyToOne

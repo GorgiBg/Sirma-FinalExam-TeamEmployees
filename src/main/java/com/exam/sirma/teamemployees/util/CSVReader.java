@@ -15,6 +15,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
+import static com.exam.sirma.teamemployees.util.StringConstant.*;
+
 public class CSVReader {
 
     public static List<Employee> read(String filepath, EmployeeService employeeService,
@@ -41,32 +43,25 @@ public class CSVReader {
 
                         // Create or get the existing Employee
                         Employee employee = getEmployee(existingEmployee, empId, employees);
-
+                        employeeService.saveEmployee(employee);
                         // Create or get the existing ProjectParticipation for the same project number
                         ProjectParticipation participation = getOrCreateProjectParticipation(employee, projectNumber);
-
+                        participationService.saveProjectParticipation(participation);
                         // Add a new DateRange to the list
-                        DateRange dateRange = new DateRange(dateFrom, dateTo);
+                        DateRange dateRange = new DateRange(dateFrom, dateTo, participation);
                         participation.getDateRangesOnProject().add(dateRange);
 
-                        // Save the DateRange, ProjectParticipation, and Employee
-                        participationService.saveProjectParticipation(participation);
-                        employeeService.saveEmployee(employee);
-
                     } catch (NumberFormatException | DateTimeParseException e) {
-                        System.out.println("Error parsing data: " + e.getMessage());
+                        System.out.println(ERROR_DATA + e.getMessage());
                     }
                 } else {
-                    System.out.println("Invalid data in line: " + line);
+                    System.out.println(INVALID_LINE + line);
                 }
             }
 
         } catch (IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
+            System.out.println(ERROR_FILE + e.getMessage());
         }
-
-        // TODO - (to remove later) print Employees for testing purposes
-        System.out.println(employees);
         return employees;
     }
 
@@ -74,6 +69,7 @@ public class CSVReader {
         return employee.getProjectParticipation().computeIfAbsent(projectNumber, e -> {
             ProjectParticipation newParticipation = new ProjectParticipation();
             newParticipation.setProjectNumber(projectNumber);
+            newParticipation.setEmployee(employee);
             return newParticipation;
         });
     }
@@ -90,7 +86,7 @@ public class CSVReader {
 
     private static LocalDate parseDate(String dateString, DateString dateEnum) {
         // if we don`t have dateTo we add LocalDate.now()
-        if (dateString.equalsIgnoreCase("NULL") && dateEnum.equals(DateString.DATE_TO)) {
+        if (dateString.equalsIgnoreCase(NULL) && dateEnum.equals(DateString.DATE_TO)) {
             return LocalDate.now();
         }
 
@@ -119,7 +115,7 @@ public class CSVReader {
             }
         }
 
-        throw new DateTimeParseException("Unable to parse date: " + dateString, dateString, 0);
+        throw new DateTimeParseException(UNABLE_PARSE_DATE + dateString, dateString, 0);
     }
 }
 

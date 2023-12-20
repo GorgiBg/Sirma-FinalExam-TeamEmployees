@@ -30,9 +30,8 @@ public class DataInitialization {
     public CommandLineRunner initData() {
         return args -> {
             List<Employee> read = CSVReader.read(StringConstant.FILE_PATH, employeeService, participationService);
-            CalculationUtil.identifyLongestWorkingPair(read);
-            // for testing purposes
-            System.out.println();
+            employeeService.saveAllEmployees(read);
+            //CalculationUtil.identifyLongestWorkingPair(read);
         };
     }
 }

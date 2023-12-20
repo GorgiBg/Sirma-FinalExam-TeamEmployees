@@ -2,6 +2,10 @@ package com.exam.sirma.teamemployees.controller;
 
 import com.exam.sirma.teamemployees.entity.Employee;
 import com.exam.sirma.teamemployees.service.EmployeeService;
+import com.exam.sirma.teamemployees.service.ProjectParticipationService;
+import com.exam.sirma.teamemployees.util.CSVReader;
+import com.exam.sirma.teamemployees.util.CalculationUtil;
+import com.exam.sirma.teamemployees.util.StringConstant;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +18,11 @@ import java.util.NoSuchElementException;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
+    private final ProjectParticipationService participationService;
 
-    public EmployeeController(EmployeeService employeeService) {
+    public EmployeeController(EmployeeService employeeService, ProjectParticipationService participationService) {
         this.employeeService = employeeService;
+        this.participationService = participationService;
     }
 
     @GetMapping
@@ -46,4 +52,12 @@ public class EmployeeController {
         employeeService.deleteEmployee(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+   @GetMapping("/print-result")
+   public ResponseEntity<String> printResult() {
+       List<Employee> allEmployees = employeeService.getAllEmployees();
+       String result = CalculationUtil.identifyLongestWorkingPair(allEmployees);
+       System.out.println();
+       return ResponseEntity.ok(result);
+   }
 }
