@@ -20,6 +20,7 @@ public class CalculationUtil {
         Employee employee1WithLongestDuration = null;
         Employee employee2WithLongestDuration = null;
 
+        // pick any two employees and check common projects duration
         for (int i = 0; i < employees.size(); i++) {
             Employee employee1 = employees.get(i);
 
@@ -35,14 +36,17 @@ public class CalculationUtil {
                 }
             }
         }
+
         if (employee1WithLongestDuration != null && employee2WithLongestDuration != null) {
             result.append(String.format(LONGEST_WORKING_PAIR, employee1WithLongestDuration.getEmpId(),
                 employee2WithLongestDuration.getEmpId())).append(System.lineSeparator());
             result.append(String.format(TOTAL_DURATION, longestDuration)).append(System.lineSeparator());
         }
+
         return displayCommonProjects(employee1WithLongestDuration, employee2WithLongestDuration, result);
     }
 
+    // calculates the duration on common projects for emp1 and emp2
     private static long calculateTotalDuration(Employee employee1, Employee employee2) {
         return employee1.getProjectParticipation().entrySet().stream()
             .filter(entry -> employee2.getProjectParticipation().containsKey(entry.getKey()))

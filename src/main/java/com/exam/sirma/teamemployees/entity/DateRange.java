@@ -60,5 +60,13 @@ public class DateRange {
             ", endDate=" + endDate +
             '}';
     }
+
+    public ProjectParticipation getParticipation() {
+        return participation;
+    }
+
+    public void setParticipation(ProjectParticipation participation) {
+        this.participation = participation;
+    }
 }
 
