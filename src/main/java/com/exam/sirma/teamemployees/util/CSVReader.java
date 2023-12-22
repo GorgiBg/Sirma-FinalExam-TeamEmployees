@@ -52,9 +52,10 @@ public class CSVReader {
                         boolean isOverlapped = checkForOverlap(participation.getDateRangesOnProject(), dateRange);
                         if (isOverlapped) {
                             throw new IllegalArgumentException(String.format(OVERLAP_PERIODS, empId, projectNumber));
+                        } else {
+                            participation.getDateRangesOnProject().add(dateRange);
                         }
 
-                        participation.getDateRangesOnProject().add(dateRange);
                     } catch (DateTimeParseException | IllegalArgumentException e) {
                         System.out.println(ERROR_DATA + e.getMessage());
                     }
