@@ -84,8 +84,8 @@ public class CalculationUtil {
                 LocalDate overlapEndDate = endDate1.isBefore(endDate2) ? endDate1 : endDate2;
 
                 if (!overlapStartDate.isAfter(overlapEndDate)) {
-                    // Calculate the duration in days
-                    long days = ChronoUnit.DAYS.between(overlapStartDate, overlapEndDate);
+                    // Calculate the duration in days, add 1 day to be correct(Example: if Emp starts at 01-01-2020 and works for only one day)
+                    long days = ChronoUnit.DAYS.between(overlapStartDate, overlapEndDate) + 1L;
                     duration += days;
                 }
             }
