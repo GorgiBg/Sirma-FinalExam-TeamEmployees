@@ -51,7 +51,8 @@ public class CSVReader {
                         DateRange dateRange = new DateRange(dateFrom, dateTo, participation);
                         boolean isOverlapped = checkForOverlap(participation.getDateRangesOnProject(), dateRange);
                         if (isOverlapped) {
-                            throw new IllegalArgumentException(String.format(OVERLAP_PERIODS, empId, projectNumber));
+                            throw new IllegalArgumentException(String.format(OVERLAP_PERIODS, empId, projectNumber,
+                                dateRange.getStartDate(), dateRange.getEndDate()));
                         } else {
                             participation.getDateRangesOnProject().add(dateRange);
                         }
