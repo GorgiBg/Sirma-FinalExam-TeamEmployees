@@ -38,6 +38,7 @@ public class EmployeeController {
             Employee employee = employeeService.getEmployeeById(id);
             return new ResponseEntity<>(employee, HttpStatus.OK);
         } catch (NoSuchElementException e) {
+            log.error("Employee not found with ID: {}", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

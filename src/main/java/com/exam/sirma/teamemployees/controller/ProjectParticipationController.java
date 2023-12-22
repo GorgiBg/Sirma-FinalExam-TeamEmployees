@@ -34,6 +34,7 @@ public class ProjectParticipationController {
             ProjectParticipation projectParticipation = projectParticipationService.getProjectParticipationById(id);
             return new ResponseEntity<>(projectParticipation, HttpStatus.OK);
         } catch (NoSuchElementException e) {
+            log.error("Participation not found with ID: {}", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

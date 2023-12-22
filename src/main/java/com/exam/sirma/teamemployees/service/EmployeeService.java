@@ -6,12 +6,14 @@ import com.exam.sirma.teamemployees.repository.EmployeeRepository;
 import com.exam.sirma.teamemployees.repository.ProjectParticipationRepository;
 import com.exam.sirma.teamemployees.util.StringConstant;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
+@Slf4j
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final ProjectParticipationRepository participationRepository;
@@ -36,7 +38,7 @@ public class EmployeeService {
                 .orElseThrow(() -> new NoSuchElementException(String.format(StringConstant.EMPLOYEE_NOT_FOUND, id)));
             return employee;
         } catch (NoSuchElementException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
             return null;
         }
     }

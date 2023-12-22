@@ -6,6 +6,7 @@ import com.exam.sirma.teamemployees.entity.ProjectParticipation;
 import com.exam.sirma.teamemployees.enumeration.DateString;
 import com.exam.sirma.teamemployees.service.EmployeeService;
 import com.exam.sirma.teamemployees.service.ProjectParticipationService;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -17,6 +18,7 @@ import java.util.*;
 
 import static com.exam.sirma.teamemployees.util.StringConstant.*;
 
+@Slf4j
 public class CSVReader {
 
     public static List<Employee> read(String filepath, EmployeeService employeeService,
@@ -61,12 +63,12 @@ public class CSVReader {
                         System.out.println(ERROR_DATA + e.getMessage());
                     }
                 } else {
-                    System.out.println(INVALID_LINE + line);
+                    log.error(INVALID_LINE + line);
                 }
             }
 
         } catch (IOException e) {
-            System.out.println(ERROR_FILE + e.getMessage());
+            log.error(ERROR_FILE + e.getMessage());
         }
         return employees;
     }
