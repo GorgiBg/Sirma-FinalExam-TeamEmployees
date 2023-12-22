@@ -59,12 +59,12 @@ public class EmployeeController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping( "/print-result")
-   public ResponseEntity<String> printResult() {
-       List<Employee> allEmployees = employeeService.getAllEmployees();
-       String result = CalculationUtil.identifyLongestWorkingPair(allEmployees);
-       // set System.lineSeparator() to <br> so i can get line breaks in html
-       result = result.replace(System.lineSeparator(), "<br>");
-       return ResponseEntity.ok(result);
-   }
+    @GetMapping("/print-result")
+    public ResponseEntity<String> printResult() {
+        List<Employee> allEmployees = employeeService.getAllEmployees();
+        String result = CalculationUtil.identifyLongestWorkingPair(allEmployees);
+        // set System.lineSeparator() to <br> so i can get line breaks in html
+        result = result.replace(System.lineSeparator(), "<br>");
+        return ResponseEntity.ok(result);
+    }
 }

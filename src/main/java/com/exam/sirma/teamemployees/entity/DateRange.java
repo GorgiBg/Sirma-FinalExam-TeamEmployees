@@ -10,6 +10,8 @@ import java.time.LocalDate;
 @Table
 public class DateRange {
 
+    @ManyToOne
+    ProjectParticipation participation;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,11 +19,6 @@ public class DateRange {
     private LocalDate startDate;
     @NotNull(message = "End date must not be null!")
     private LocalDate endDate;
-
-
-
-    @ManyToOne
-    ProjectParticipation participation;
 
     public DateRange(LocalDate startDate, LocalDate endDate, ProjectParticipation participation) {
         this.startDate = startDate;
@@ -48,12 +45,12 @@ public class DateRange {
         this.endDate = endDate;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
