@@ -13,4 +13,5 @@ public class StringConstant {
     public static final String ERROR_FILE = "Error reading file: ";
     public static final String NULL = "NULL";
     public static final String UNABLE_PARSE_DATE = "Unable to parse date: ";
+    public static final String OVERLAP_PERIODS = "Current DateRange of Employee: %d and Project: %d intersects with an existing period";
 }

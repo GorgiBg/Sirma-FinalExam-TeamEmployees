@@ -49,9 +49,13 @@ public class CSVReader {
                         participationService.saveProjectParticipation(participation);
                         // Add a new DateRange to the list
                         DateRange dateRange = new DateRange(dateFrom, dateTo, participation);
-                        participation.getDateRangesOnProject().add(dateRange);
+                        boolean isOverlapped = checkForOverlap(participation.getDateRangesOnProject(), dateRange);
+                        if (isOverlapped) {
+                            throw new IllegalArgumentException(String.format(OVERLAP_PERIODS, empId, projectNumber));
+                        }
 
-                    } catch (NumberFormatException | DateTimeParseException e) {
+                        participation.getDateRangesOnProject().add(dateRange);
+                    } catch (DateTimeParseException | IllegalArgumentException e) {
                         System.out.println(ERROR_DATA + e.getMessage());
                     }
                 } else {
@@ -63,6 +67,26 @@ public class CSVReader {
             System.out.println(ERROR_FILE + e.getMessage());
         }
         return employees;
+    }
+
+    // check if we have common days between current DateRange and existing ones
+    private static boolean checkForOverlap(List<DateRange> dateRangesOnProject, DateRange newDateRange) {
+        LocalDate newStartDate = newDateRange.getStartDate();
+        LocalDate newEndDate = newDateRange.getEndDate();
+
+        for (DateRange existingDateRange : dateRangesOnProject) {
+            LocalDate existingStartDate = existingDateRange.getStartDate();
+            LocalDate existingEndDate = existingDateRange.getEndDate();
+
+            // Check for non-overlap conditions
+            if (newEndDate.isBefore(existingStartDate) || newStartDate.isAfter(existingEndDate)) {
+                continue;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     private static ProjectParticipation getOrCreateProjectParticipation(Employee employee, int projectNumber) {
