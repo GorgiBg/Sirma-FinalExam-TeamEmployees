@@ -11,6 +11,7 @@ import java.time.LocalDate;
 public class DateRange {
 
     @ManyToOne
+    @JoinColumn(name = "project_number")
     ProjectParticipation participation;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

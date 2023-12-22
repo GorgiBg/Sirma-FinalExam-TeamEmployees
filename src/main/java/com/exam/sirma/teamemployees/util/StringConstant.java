@@ -15,4 +15,5 @@ public class StringConstant {
     public static final String UNABLE_PARSE_DATE = "Unable to parse date: ";
     public static final String OVERLAP_PERIODS = "Current DateRange of Employee: %d and Project: %d intersects with an " +
         "existing period, previous DateRange is from %s until %s";
+    public static final String FAILED_TO_SAVE_EMPLOYEE = "Failed to save employee: ";
 }

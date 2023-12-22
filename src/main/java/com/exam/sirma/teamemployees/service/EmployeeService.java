@@ -9,6 +9,8 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import static com.exam.sirma.teamemployees.util.StringConstant.*;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -38,13 +40,18 @@ public class EmployeeService {
                 .orElseThrow(() -> new NoSuchElementException(String.format(StringConstant.EMPLOYEE_NOT_FOUND, id)));
             return employee;
         } catch (NoSuchElementException e) {
-            log.error(e.getMessage());
             return null;
         }
     }
 
     public Employee saveEmployee(Employee employee) {
-        return employeeRepository.save(employee);
+        try {
+            employeeRepository.save(employee);
+            return employee;
+        } catch (Exception e) {
+            log.error(FAILED_TO_SAVE_EMPLOYEE + e.getMessage(), e);
+            return null;
+        }
     }
 
     public void deleteEmployee(Long id) {

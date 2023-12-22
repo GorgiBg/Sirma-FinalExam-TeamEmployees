@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.exam.sirma.teamemployees.util.StringConstant.*;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -36,9 +38,12 @@ public class EmployeeController {
     public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
         try {
             Employee employee = employeeService.getEmployeeById(id);
-            return new ResponseEntity<>(employee, HttpStatus.OK);
+            if (employee != null) {
+                return new ResponseEntity<>(employee, HttpStatus.OK);
+            }
+            throw  new NoSuchElementException(String.format(EMPLOYEE_NOT_FOUND, id));
         } catch (NoSuchElementException e) {
-            log.error("Employee not found with ID: {}", id);
+            log.error(e.getMessage(), id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -63,6 +68,9 @@ public class EmployeeController {
     @GetMapping("/print-result")
     public ResponseEntity<String> printResult() {
         List<Employee> allEmployees = employeeService.getAllEmployees();
+        if (allEmployees == null || allEmployees.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching employees");
+        }
         String result = CalculationUtil.identifyLongestWorkingPair(allEmployees);
         // set System.lineSeparator() to <br> so i can get line breaks in html
         result = result.replace(System.lineSeparator(), "<br>");
