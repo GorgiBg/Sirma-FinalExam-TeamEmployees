@@ -1,6 +1,8 @@
 package com.exam.sirma.teamemployees.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
 
 import java.time.LocalDate;
 
@@ -11,7 +13,9 @@ public class DateRange {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull(message = "Start date must not be null!")
     private LocalDate startDate;
+    @NotNull(message = "End date must not be null!")
     private LocalDate endDate;
 
 

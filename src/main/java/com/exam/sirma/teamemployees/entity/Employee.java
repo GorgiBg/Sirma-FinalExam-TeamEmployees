@@ -1,7 +1,10 @@
 package com.exam.sirma.teamemployees.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Fetch;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,9 +14,11 @@ import java.util.Map;
 public class Employee {
 
     @Id
+    @NotNull(message = "Employee ID must not be null!")
     private Long empId;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private Map<Integer, ProjectParticipation> projectParticipation = new HashMap<>();
 
     public Employee(Long empId) {

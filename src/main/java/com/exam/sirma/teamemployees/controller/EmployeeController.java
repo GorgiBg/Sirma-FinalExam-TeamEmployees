@@ -3,11 +3,10 @@ package com.exam.sirma.teamemployees.controller;
 import com.exam.sirma.teamemployees.entity.Employee;
 import com.exam.sirma.teamemployees.service.EmployeeService;
 import com.exam.sirma.teamemployees.service.ProjectParticipationService;
-import com.exam.sirma.teamemployees.util.CSVReader;
 import com.exam.sirma.teamemployees.util.CalculationUtil;
-import com.exam.sirma.teamemployees.util.StringConstant;
+import lombok.extern.slf4j.Slf4j;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +14,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
+@Slf4j
 @RequestMapping("/employees")
 public class EmployeeController {
 
@@ -42,10 +42,15 @@ public class EmployeeController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<Employee> saveEmployee(@RequestBody Employee employee) {
-        Employee savedEmployee = employeeService.saveEmployee(employee);
-        return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
+    @PostMapping(consumes = "application/json")
+    public ResponseEntity<Employee> saveEmployee(@Valid @RequestBody Employee employee) {
+        try {
+            Employee savedEmployee = employeeService.saveEmployee(employee);
+            return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
+        } catch (Exception validationException) {
+            log.error("Validation error: {}", validationException.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @DeleteMapping("/{id}")

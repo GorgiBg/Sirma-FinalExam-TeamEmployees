@@ -2,6 +2,8 @@ package com.exam.sirma.teamemployees.controller;
 
 import com.exam.sirma.teamemployees.entity.ProjectParticipation;
 import com.exam.sirma.teamemployees.service.ProjectParticipationService;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
+@Slf4j
 @RequestMapping("/projectParticipation")
 public class ProjectParticipationController {
 
@@ -36,9 +39,14 @@ public class ProjectParticipationController {
     }
 
     @PostMapping
-    public ResponseEntity<ProjectParticipation> saveProjectParticipation(@RequestBody ProjectParticipation projectParticipation) {
-        ProjectParticipation savedProjectParticipation = projectParticipationService.saveProjectParticipation(projectParticipation);
-        return new ResponseEntity<>(savedProjectParticipation, HttpStatus.CREATED);
+    public ResponseEntity<ProjectParticipation> saveProjectParticipation(@Valid @RequestBody ProjectParticipation projectParticipation) {
+        try {
+            ProjectParticipation savedProjectParticipation = projectParticipationService.saveProjectParticipation(projectParticipation);
+            return new ResponseEntity<>(savedProjectParticipation, HttpStatus.CREATED);
+        } catch (Exception validationException) {
+            log.error("Validation error: {}", validationException.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @DeleteMapping("/{id}")
