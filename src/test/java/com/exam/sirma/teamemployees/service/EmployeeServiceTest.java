@@ -44,7 +44,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void getEmployeeById_ExistingId_ReturnsEmployee() {
+    void getEmployeeWithExistingIdReturnsEmployee() {
         Long existingId = 1L;
         Employee expectedEmployee = new Employee();
         when(employeeRepository.findById(existingId)).thenReturn(Optional.of(expectedEmployee));
@@ -53,7 +53,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void getEmployeeById_NonExistingId_ReturnsNull() {
+    void getEmployeeWithNonExistingIdReturnsNull() {
         Long nonExistingId = 99L;
         when(employeeRepository.findById(nonExistingId)).thenReturn(Optional.empty());
         Employee result = employeeService.getEmployeeById(nonExistingId);
