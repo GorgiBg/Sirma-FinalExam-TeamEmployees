@@ -21,11 +21,9 @@ import java.util.NoSuchElementException;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
-    private final ProjectParticipationService participationService;
 
     public EmployeeController(EmployeeService employeeService, ProjectParticipationService participationService) {
         this.employeeService = employeeService;
-        this.participationService = participationService;
     }
 
     @GetMapping
