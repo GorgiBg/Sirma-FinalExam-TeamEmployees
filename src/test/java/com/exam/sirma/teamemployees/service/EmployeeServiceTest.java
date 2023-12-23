@@ -32,7 +32,7 @@ class EmployeeServiceTest {
     void saveAllEmployees() {
         List<Employee> employees = List.of(new Employee(), new Employee());
         employeeService.saveAllEmployees(employees);
-        verify(employeeRepository, times(1)).saveAll(employees);
+        verify(employeeRepository).saveAll(employees);
     }
 
     @Test
@@ -69,7 +69,7 @@ class EmployeeServiceTest {
         assertDoesNotThrow(() -> {
             Employee savedEmployee = employeeService.saveEmployee(employeeToSave);
             assertNotNull(savedEmployee);
-            verify(employeeRepository, times(1)).save(employeeToSave);
+            verify(employeeRepository).save(employeeToSave);
         });
     }
 
@@ -77,13 +77,13 @@ class EmployeeServiceTest {
     void deleteEmployee() {
         Long idToDelete = 1L;
         employeeService.deleteEmployee(idToDelete);
-        verify(employeeRepository, times(1)).deleteById(idToDelete);
+        verify(employeeRepository).deleteById(idToDelete);
     }
 
     @Test
     void saveProjectParticipation() {
         ProjectParticipation projectParticipation = new ProjectParticipation();
         employeeService.saveProjectParticipation(projectParticipation);
-        verify(participationRepository, times(1)).save(projectParticipation);
+        verify(participationRepository).save(projectParticipation);
     }
 }
