@@ -1,11 +1,8 @@
 package com.exam.sirma.teamemployees.service;
 
 import com.exam.sirma.teamemployees.entity.Employee;
-import com.exam.sirma.teamemployees.entity.ProjectParticipation;
 import com.exam.sirma.teamemployees.repository.EmployeeRepository;
-import com.exam.sirma.teamemployees.repository.ProjectParticipationRepository;
 import com.exam.sirma.teamemployees.util.StringConstant;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

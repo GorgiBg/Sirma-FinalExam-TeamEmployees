@@ -2,7 +2,6 @@ package com.exam.sirma.teamemployees.controller;
 
 import com.exam.sirma.teamemployees.entity.Employee;
 import com.exam.sirma.teamemployees.entity.ProjectParticipation;
-import com.exam.sirma.teamemployees.repository.EmployeeRepository;
 import com.exam.sirma.teamemployees.service.EmployeeService;
 import com.exam.sirma.teamemployees.util.CalculationUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +33,6 @@ class EmployeeControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
-
 
     @Test
     void getAllEmployees() {
@@ -103,7 +101,7 @@ class EmployeeControllerTest {
     }
 
     @Test
-    void printResult_WithEmployees_ReturnsOkWithResult() {
+    void printResultWithEmployeesReturnsOkWithResult() {
         // Mock the static method
         mockStatic(CalculationUtil.class);
 
@@ -128,7 +126,7 @@ class EmployeeControllerTest {
     }
 
     @Test
-    void printResult_WithEmptyEmployees_ReturnsInternalServerError() {
+    void printResultWithEmptyEmployeesReturnsInternalServerError() {
         when(employeeService.getAllEmployees()).thenReturn(List.of());
 
         ResponseEntity<String> result = employeeController.printResult();

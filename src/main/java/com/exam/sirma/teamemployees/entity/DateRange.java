@@ -3,7 +3,6 @@ package com.exam.sirma.teamemployees.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
-
 import java.time.LocalDate;
 
 @Entity

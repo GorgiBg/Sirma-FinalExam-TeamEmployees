@@ -30,7 +30,7 @@ public class ProjectParticipation {
 
     }
 
-    public ProjectParticipation( int projectNumber, Employee employee) {
+    public ProjectParticipation(int projectNumber, Employee employee) {
         this.projectNumber = projectNumber;
         this.employee = employee;
     }
