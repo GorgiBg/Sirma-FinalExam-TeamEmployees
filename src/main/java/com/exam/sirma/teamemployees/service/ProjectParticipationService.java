@@ -38,7 +38,12 @@ public class ProjectParticipationService {
     }
 
     public ProjectParticipation saveProjectParticipation(ProjectParticipation projectParticipation) {
-        return projectParticipationRepository.save(projectParticipation);
+        try {
+            return projectParticipationRepository.save(projectParticipation);
+        } catch (Exception e) {
+            log.error("Failed to save project participation: {}", e.getMessage(), e);
+            return null;
+        }
     }
 
     public void deleteProjectParticipation(Long id) {

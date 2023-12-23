@@ -16,4 +16,6 @@ public class StringConstant {
     public static final String OVERLAP_PERIODS = "Current DateRange of Employee: %d and Project: %d intersects with an " +
         "existing period, previous DateRange is from %s until %s";
     public static final String FAILED_TO_SAVE_EMPLOYEE = "Failed to save employee: ";
+    public static final String FAILED_TO_PROJECT_PARTICIPATION = "Failed to save project participation: {}";
+    public static final String VALIDATION_ERROR = "Validation error: {}";
 }

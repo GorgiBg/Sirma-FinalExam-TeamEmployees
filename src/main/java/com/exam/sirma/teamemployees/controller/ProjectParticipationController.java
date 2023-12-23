@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.exam.sirma.teamemployees.util.StringConstant.*;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -34,18 +36,18 @@ public class ProjectParticipationController {
             ProjectParticipation projectParticipation = projectParticipationService.getProjectParticipationById(id);
             return new ResponseEntity<>(projectParticipation, HttpStatus.OK);
         } catch (NoSuchElementException e) {
-            log.error("Participation not found with ID: {}", id);
+            log.error(FAILED_TO_PROJECT_PARTICIPATION, id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @PostMapping
+    @PostMapping(consumes = "application/json")
     public ResponseEntity<ProjectParticipation> saveProjectParticipation(@Valid @RequestBody ProjectParticipation projectParticipation) {
         try {
             ProjectParticipation savedProjectParticipation = projectParticipationService.saveProjectParticipation(projectParticipation);
             return new ResponseEntity<>(savedProjectParticipation, HttpStatus.CREATED);
         } catch (Exception validationException) {
-            log.error("Validation error: {}", validationException.getMessage());
+            log.error(VALIDATION_ERROR, validationException.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }

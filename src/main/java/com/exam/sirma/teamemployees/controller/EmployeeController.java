@@ -54,7 +54,7 @@ public class EmployeeController {
             Employee savedEmployee = employeeService.saveEmployee(employee);
             return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
         } catch (Exception validationException) {
-            log.error("Validation error: {}", validationException.getMessage());
+            log.error(VALIDATION_ERROR, validationException.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
