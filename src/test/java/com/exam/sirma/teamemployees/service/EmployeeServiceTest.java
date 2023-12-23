@@ -79,11 +79,4 @@ class EmployeeServiceTest {
         employeeService.deleteEmployee(idToDelete);
         verify(employeeRepository).deleteById(idToDelete);
     }
-
-    @Test
-    void saveProjectParticipation() {
-        ProjectParticipation projectParticipation = new ProjectParticipation();
-        employeeService.saveProjectParticipation(projectParticipation);
-        verify(participationRepository).save(projectParticipation);
-    }
 }

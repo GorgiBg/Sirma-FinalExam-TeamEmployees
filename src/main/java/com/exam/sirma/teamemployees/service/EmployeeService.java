@@ -18,12 +18,10 @@ import java.util.NoSuchElementException;
 @Slf4j
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
-    private final ProjectParticipationRepository participationRepository;
 
 
-    public EmployeeService(EmployeeRepository employeeRepository, ProjectParticipationRepository participationRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
-        this.participationRepository = participationRepository;
     }
 
     public void saveAllEmployees(List<Employee> employees) {
@@ -56,9 +54,5 @@ public class EmployeeService {
 
     public void deleteEmployee(Long id) {
         employeeRepository.deleteById(id);
-    }
-    @Transactional
-    public void saveProjectParticipation(ProjectParticipation participation) {
-        participationRepository.save(participation);
     }
 }

@@ -2,7 +2,6 @@ package com.exam.sirma.teamemployees.controller;
 
 import com.exam.sirma.teamemployees.entity.Employee;
 import com.exam.sirma.teamemployees.service.EmployeeService;
-import com.exam.sirma.teamemployees.service.ProjectParticipationService;
 import com.exam.sirma.teamemployees.util.CalculationUtil;
 import lombok.extern.slf4j.Slf4j;
 import jakarta.validation.Valid;
@@ -22,7 +21,7 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeService employeeService, ProjectParticipationService participationService) {
+    public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 

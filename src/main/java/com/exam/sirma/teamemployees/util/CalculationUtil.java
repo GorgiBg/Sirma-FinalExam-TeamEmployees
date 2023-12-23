@@ -20,12 +20,25 @@ public class CalculationUtil {
         Employee employee1WithLongestDuration = null;
         Employee employee2WithLongestDuration = null;
 
-        // pick any two employees and check common projects duration
+        if (employees == null || employees.size() < 2) {
+            result.append(LESS_THAN_TWO_EMPLOYEES);
+            return result.toString();
+        }
+
+        // pick any two employees and check for common projects duration
         for (int i = 0; i < employees.size(); i++) {
             Employee employee1 = employees.get(i);
 
+            if (isNotValidEmployeeForComparison(employee1)) {
+                continue;
+            }
+
             for (int j = i + 1; j < employees.size(); j++) {
                 Employee employee2 = employees.get(j);
+
+                if (isNotValidEmployeeForComparison(employee2)) {
+                    continue;
+                }
 
                 long duration = calculateTotalDuration(employee1, employee2);
 
@@ -41,20 +54,37 @@ public class CalculationUtil {
             result.append(String.format(LONGEST_WORKING_PAIR, employee1WithLongestDuration.getEmpId(),
                 employee2WithLongestDuration.getEmpId())).append(System.lineSeparator());
             result.append(String.format(TOTAL_DURATION, longestDuration)).append(System.lineSeparator());
+        } else {
+            result.append(NO_EMPLOYEES_TO_COMPARE);
         }
 
         return displayCommonProjects(employee1WithLongestDuration, employee2WithLongestDuration, result);
     }
 
-    // calculates the duration on common projects for emp1 and emp2
+    // check if employee and his participation are valid search for common periods
+    private static boolean isNotValidEmployeeForComparison(Employee employee) {
+        return employee == null || employee.getProjectParticipation() == null || employee.getProjectParticipation().isEmpty();
+    }
+
     private static long calculateTotalDuration(Employee employee1, Employee employee2) {
-        return employee1.getProjectParticipation().entrySet().stream()
-            .filter(entry -> employee2.getProjectParticipation().containsKey(entry.getKey()))
-            .mapToLong(entry -> calculateDuration(entry.getValue(), employee2.getProjectParticipation().get(entry.getKey())))
+        if (isNotValidEmployeeForComparison(employee1) || isNotValidEmployeeForComparison(employee2)) {
+            return 0;
+        }
+
+        Map<Integer, ProjectParticipation> projectParticipation1 = employee1.getProjectParticipation();
+        Map<Integer, ProjectParticipation> projectParticipation2 = employee2.getProjectParticipation();
+
+        return projectParticipation1.entrySet().stream()
+            .filter(entry -> projectParticipation2.containsKey(entry.getKey()))
+            .mapToLong(entry -> calculateDuration(entry.getValue(), projectParticipation2.get(entry.getKey())))
             .sum();
     }
 
     private static String displayCommonProjects(Employee employee1, Employee employee2, StringBuilder result) {
+        if (isNotValidEmployeeForComparison(employee1) || isNotValidEmployeeForComparison(employee2)) {
+            return result.toString();
+        }
+
         result.append(COMMON_PROJECTS).append(System.lineSeparator());
         for (Map.Entry<Integer, ProjectParticipation> entry : employee1.getProjectParticipation().entrySet()) {
             int projectNumber = entry.getKey();
@@ -66,6 +96,7 @@ public class CalculationUtil {
                 result.append(String.format(PROJECT_DURATION, projectNumber, duration)).append(System.lineSeparator());
             }
         }
+
         return result.toString();
     }
 

@@ -19,4 +19,6 @@ public class StringConstant {
     public static final String FAILED_TO_PROJECT_PARTICIPATION = "Failed to save project participation: {}";
     public static final String VALIDATION_ERROR = "Validation error: {}";
     public static final String ERROR_FETCHING_EMPLOYEES = "Error fetching employees";
+    public static final String LESS_THAN_TWO_EMPLOYEES = "Can not compare less than two employees!";
+    public static final String NO_EMPLOYEES_TO_COMPARE = "No valid employees found for comparison";
 }
