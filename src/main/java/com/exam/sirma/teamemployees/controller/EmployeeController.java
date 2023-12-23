@@ -67,7 +67,7 @@ public class EmployeeController {
     public ResponseEntity<String> printResult() {
         List<Employee> allEmployees = employeeService.getAllEmployees();
         if (allEmployees == null || allEmployees.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching employees");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ERROR_FETCHING_EMPLOYEES);
         }
         String result = CalculationUtil.identifyLongestWorkingPair(allEmployees);
         // set System.lineSeparator() to <br> so i can get line breaks in html

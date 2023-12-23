@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Result Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+</head>
+
+<body>
+<h1>Employees With Longest Common Project Engagements</h1>
+
+<div class="container mt-3">
+    <table class="table">
+        <tbody>
+        <tr th:each="row : ${resultRows}">
+            <td th:text="${row}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

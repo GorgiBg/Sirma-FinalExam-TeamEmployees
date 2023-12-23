@@ -18,4 +18,5 @@ public class StringConstant {
     public static final String FAILED_TO_SAVE_EMPLOYEE = "Failed to save employee: ";
     public static final String FAILED_TO_PROJECT_PARTICIPATION = "Failed to save project participation: {}";
     public static final String VALIDATION_ERROR = "Validation error: {}";
+    public static final String ERROR_FETCHING_EMPLOYEES = "Error fetching employees";
 }
