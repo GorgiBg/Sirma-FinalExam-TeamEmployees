@@ -44,3 +44,8 @@ The following commands are available:
 - Search Project Participation by ID [ID]
 - Search All Project Participations
 - List Project Participations
+
+## Testing
+
+This project includes a comprehensive suite of tests covering various aspects, including unit tests and integration tests.
+The tests are implemented using JUnit and Mockito.
